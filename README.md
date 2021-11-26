@@ -16,7 +16,7 @@ Comme nous avons neuf valeurs possibles pour le sudoku nous avons besoin d'attri
 
 Cela marche car si deux sommets reliés ne peuvent pas avoir la même couleur (=numéro) cela revient à dire qu'on attribut une couleur a un sommet et que la ligne, la collone et le sous-graphe ne peuvent pas avoir la même couleur.
 
-Si une ou des valeurs sont présentes dans le graphe, faudra attribuer une couleur a la case (=sommet) correspondante, puis vérifie que la résolution est toujours possible, et si c'est possible nous pouvons alors commencer à applique l'algorithme de coloration. Pour verifier si la résolution est possible nous devons verifier que deux sommets du graphe ne sont pas reliés.
+Si une ou des valeurs sont présentes dans le graphe, faudra attribuer une couleur a la case (=sommet) correspondante, puis vérifie que la résolution est toujours possible, et si c'est possible nous pouvons alors commencer à applique l'algorithme de coloration. Pour verifier si la résolution est possible nous devons verifier que deux sommets du graphe de même couleur ne sont pas reliés.
 
 ### Cartes géographiques 
 

@@ -102,7 +102,7 @@ def coloration2(g, sommet):
 
 				if nb_couleur == nb_couleur_voisins:
 					nb_couleur +=1
-					resultat[sommetsss] = nb_couleur
+					resultat[sommet] = nb_couleur
 				else :
 					for couleur in range(nb_couleur):
 						if not (couleur in couleur_voisins):

@@ -2,7 +2,7 @@ import sys
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from brouillon.coloration import *
+from coloration import *
 
 def voisins(fichier):
 	liste_voisins = []
@@ -38,20 +38,26 @@ def create_graph(data):
 
 
 
-def main(fl):
-	data = voisins(fl)
-	
-	print(data)
-	G = create_graph(data)
-	
-	print(coloration(G, 0))
-	
-	nx.draw(G, with_labels=True, font_weight='bold')
+def main():
+	G = nx.sudoku_graph()
+
+	values = coloration2(G, 1)
+	print(values)
+
+	i = 1
+	d = dict()
+	for v in values:
+		if not v in d.keys():
+			d[v] = i
+			i += 1
+	print("nombre de couleur : {}".format(len(d.keys())))
+
+	nx.draw(G, cmap=plt.get_cmap('viridis'), node_color=values, with_labels=True, font_color='white')
 	plt.show()
-	
+
+
 if __name__ == '__main__':
-	assert len(sys.argv) > 1, 'il manque un argument'
-	main(sys.argv[1])
+	main()
 
 
 

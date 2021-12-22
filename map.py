@@ -2,7 +2,7 @@ import sys
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from brouillon.coloration import *
+from coloration import *
 
 def voisins(fichier):
 	liste_voisins = []
@@ -29,15 +29,12 @@ def voisins_int(fichier):
 	return liste_voisins
 
 
-def attribut_entier_au_pays:
-	
-
 def create_graph(data):
 	d = dict()
 	comp = 0
 	for v1,v2 in data:
 		if not v1 in d.keys():
-			d[v] = comp
+			d[v1] = comp
 			comp +=1
 		if not v2 in d.keys():
 			d[v2] = comp
@@ -53,12 +50,13 @@ def create_graph(data):
 
 def main(fl):
 	data = voisins(fl)
-	print(data)
 	G = create_graph(data)
 	
-	print(coloration(G, 0))
+	values = coloration(G, 0)
 	
 	nx.draw(G, with_labels=True, font_weight='bold')
+
+	#nx.draw(G, cmap=plt.get_cmap('viridis'), node_color=values, with_labels=True, font_color='white')
 	plt.show()
 	
 if __name__ == '__main__':

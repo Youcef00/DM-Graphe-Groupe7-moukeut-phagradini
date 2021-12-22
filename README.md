@@ -43,14 +43,14 @@ En fait, le problème à résoudre pour les 3 problèmes est toujours le même, 
 ## Rendu 2
 
 
-- Un "problème difficile" est un problème avec une complexité importante, comme les problèmes N=NP
+- Un "problème difficile" est un problème avec une complexité importante, comme les problèmes NP-complets
 - Une heuristique est une solution qui se rapproche d'une solution la plus optimale.
 
-- Pour l'algorithme naïf nous avons décider de parcourir le graphe en largeur et associer une couleur différente à chaque sommet
-- Pour l'algorithme glouton nous avons conservé le parcours en largeur du graphe mais avant d'associer une couleur à chaque sommet, nous regarder d'abord les couleurs des voisins, puis associons une couleur qui n'est pas celle des voisins parmis les couleurs déjà utilisées, s'il n'y a pas de couleurs non utilisée on ajoute donc une coleur.
-- Pour l'algorithme avancé nous conservons le parcours en largeur mais maintenant nous stoquons la fréquence des couleurs déjà utilisés, sauf que après avoir regardé la couleur des voisins (comme dans l'algorithme glouton), nous associons au sommet la couleur la moins fréquente, et s'il n'y a pas assez de couleurs on ajoute alors une couleur supplémentaire (comme précédament). 
+- Pour l'algorithme naïf, nous avons décidé de parcourir le graphe en largeur et d'associer une couleur différente à chaque sommet.
+- Pour l'algorithme glouton, nous avons conservé le parcours en largeur du graphe, mais avant d'associer une couleur à chaque sommet, nous regarder d'abord les couleurs des voisins, puis associons une couleur qui n'est pas celle des voisins parmi les couleurs déjà utilisées, s'il n'y a pas de couleurs non utilisées, on ajoute donc une couleur.
+- Pour l'algorithme avancé, nous conservons le parcours en largeur, mais maintenant, nous stockons la fréquence des couleurs déjà utilisées, sauf qu'après avoir regardé la couleur des voisins (comme dans l'algorithme glouton), nous associons au sommet la couleur la moins fréquente, et s'il n'y a pas assez de couleurs, on ajoute alors une couleur supplémentaire (comme précédemment).
 
-Voici le code des deux premiers algorithmes : 
+Voici le code des trois premiers algorithmes : 
 
 ```py
 # Algo naif
@@ -65,11 +65,11 @@ def coloration(g, sommet):
 		sommet = a_traiter.pop()
 		
 		if not deja_visites[sommet]:
-			resultat.append(sommet)
+			#resultat.append(sommet)
 			deja_visites[sommet] = True
 			nb_couleur += 1
 			resultat[sommet] = nb_couleur			
-			for voisin in graphe.neighbors(sommet):
+			for voisin in g.neighbors(sommet):
 				if not deja_visites[voisin] and not voisin in a_traiter:
 					a_traiter.append(voisin)
 	return resultat
@@ -86,28 +86,26 @@ def coloration2(g, sommet):
 	while a_traiter != []:
 		sommet = a_traiter.pop()
 		
+		# On verifie que le sommet n'est pas visité
 		if not deja_visites[sommet]:
-			resultat.append(sommet)
 			deja_visites[sommet] = True
-						
+			
 			couleur_voisins = []
-
-			for voisin in graphe.neighbors(sommet):
+			for voisin in g.neighbors(sommet):
 				if deja_visites[voisin]:
 					couleur_voisins.append(resultat[voisin])
-				if not deja_visites[voisin] and not voisin in a_traiter:
+				if not deja_visites[voisin] and not voisin in a_traiter: 
 					a_traiter.append(voisin)
 			
 				nb_couleur_voisins = len(couleur_voisins)
-
 				if nb_couleur == nb_couleur_voisins:
 					nb_couleur +=1
 					resultat[sommet] = nb_couleur
 				else :
-					for couleur in range(nb_couleur):
+					for couleur in range(1, nb_couleur+1):
 						if not (couleur in couleur_voisins):
 							resultat[sommet] = nb_couleur
-							
+							break
 	return resultat
 ```
 
@@ -125,12 +123,11 @@ def coloration3(g, sommet):
 		sommet = a_traiter.pop()
 		
 		if not deja_visites[sommet]:
-			resultat.append(sommet)
 			deja_visites[sommet] = True
 						
 			couleur_voisins = []
 
-			for voisin in graphe.neighbors(sommet):
+			for voisin in g.neighbors(sommet):
 				if deja_visites[voisin]:
 					couleur_voisins.append(resultat[voisin])
 				if not deja_visites[voisin] and not voisin in a_traiter:
@@ -139,18 +136,57 @@ def coloration3(g, sommet):
 				nb_couleur_voisins = len(couleur_voisins)
 
 				if nb_couleur == nb_couleur_voisins:
+					frequences_couleurs += [0]
 					nb_couleur +=1
-					frequences_couleurs[nb_couleur-1] = 1
+					
+					frequences_couleurs[nb_couleur-1] += 1
 					resultat[sommet] = nb_couleur
 				else :
 					freq_min = min(frequences_couleurs)
 					min_index = frequences_couleurs.index(freq_min)
 					frequences_couleurs[min_index] += 1
 					resultat[sommet] = min_index
-		
 	return resultat
 ```
 
+
+
+
+---------------------------------------------------
+
+
+## Rendu 3
+
+
+### Terminaison de l'algorithme
+
+Comment pouvons être sûr que nos algorithmes se terminent, tous nos algorithmes sont basés sur la même logique, ils effectuent un parcours en largeur. Nos algorithmes se terminent, car au départ, nous avons un sommet de départ qu'on ajoute dans le sommet à traiter, une fois ce sommet a été traité, on le retire de cette liste et on ajoute ses voisins qui n'ont pas été traité dans cette liste. Ainsi, à un moment donné, on aura visité tous les voisins de chaque sommet, ceci est valable pour un graphe connexe, pour gérer un graphe non-connexe, on ajoute dans les sommets à traiter, un sommet de chaque sous-graphe. 
+
+
+
+### Application différente
+
+Nous pouvons prendre par exemple le problème suivant, lors d'une réunion autour d'une table ronde, possédant n chaises, on invite n invités, certains d'entre eux ne s'entendent pas bien, on décide alors de ne pas les places côte à côte. Ce problème est similaire aux problèmes rencontrés précédemment.
+
+
+
+### Conclusion 
+
+Nous n'avons pas réussi à perfectionner nos algorithmes pour qu'ils soient fonctionnels, nous obtenons des colorations :
+- pour l'algorithme naïf, une couleur par sommet
+- pour l'algorithme glouton, par certains moments deux voisins ont la même couleur,
+- pour l'algorithme avancé, nous avons pareil que pour l'algorithme glouton.
+
+Voici des commandes pour pouvoir visualiser nos grpahes :
+
+```sh
+python3 gsm.py gsm
+```
+
+- Pour le sudoku l'algorithme va essayer de résoudre un sudoku vide representer par un graphe qui lui correspond.
+```sh
+python3 sudoku.py
+```
 
 
 

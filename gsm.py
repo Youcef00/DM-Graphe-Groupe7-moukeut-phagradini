@@ -2,8 +2,7 @@ import sys
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from brouillon.coloration import *
-
+from coloration import *
 
 def voisins_int(fichier):
 	liste_voisins = []
@@ -32,9 +31,10 @@ def main(fl):
 	print(data)
 	G = create_graph(data)
 	
-	print(coloration(G, 0))
+	values = coloration3(G, 1)
+	print(values)
 	
-	nx.draw(G, with_labels=True, font_weight='bold')
+	nx.draw(G, cmap=plt.get_cmap('viridis'), node_color=values, with_labels=True, font_color='white')
 	plt.show()
 
 

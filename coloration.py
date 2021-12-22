@@ -45,11 +45,14 @@ def coloration2(g, sommet):
 	while a_traiter != []:
 		sommet = a_traiter.pop()
 		
+		# On verifie que le sommet n'est pas visité
 		if not deja_visites[sommet]:
 			deja_visites[sommet] = True
 			
-			couleur_voisins = []		
-			
+			couleur_voisins = []
+			# Pour chaque voisin on va verifier : 
+			# s'il est visité : on ajoute sa couleur dans la variable `couleur_voisins` (1er if)
+			# s'il n'est pas visité et qu'il n'est pas dans la liste `a_traiter`, on l'ajoute (2eme if)
 			for voisin in g.neighbors(sommet):
 				if deja_visites[voisin]:
 					couleur_voisins.append(resultat[voisin])
@@ -57,15 +60,17 @@ def coloration2(g, sommet):
 					a_traiter.append(voisin)
 			
 				nb_couleur_voisins = len(couleur_voisins)
-				
+				# On verifie par la suite si le nombre de couleur disponible est égal au nombre de couleurs 
+				#des voisins on ajoute une couleur et on l'attribue au sommet actuel 
+				# Si non on choisi une couleur pour le sommet parmi les couleurs disponibles qui ne sont pas celles des voisins
 				if nb_couleur == nb_couleur_voisins:
 					nb_couleur +=1
 					resultat[sommet] = nb_couleur
 				else :
-					
-					for couleur in range(nb_couleur):
+					for couleur in range(1, nb_couleur+1):
 						if not (couleur in couleur_voisins):
-							resultat[sommet] = nb_couleur	
+							resultat[sommet] = nb_couleur
+							break
 	return resultat
 
 
@@ -104,21 +109,5 @@ def coloration3(g, sommet):
 					min_index = frequences_couleurs.index(freq_min)
 					frequences_couleurs[min_index] += 1
 					resultat[sommet] = min_index
-		
-	return resultat, frequences_couleurs
-	
-	
-#G = nx.Graph()
-#G.add_edges_from([(0, 1),
-#				  (0, 2),
-#				  (0, 4),
-#				  (1, 2),
-#				  (2, 3),
-#				  (3, 4)
-#		 		 ])
-		 		 
-#print(coloration(G, 1))
-#print(coloration2(G, 1))
-#print(coloration3(G, 1))
-#nx.draw(G, with_labels=True, font_weight='bold')
-#plt.show()
+	return resultat
+

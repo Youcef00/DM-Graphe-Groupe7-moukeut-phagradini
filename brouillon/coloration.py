@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 # parcours en largeur naif avec pour chaque sommet une couleur
 #faire un algo qui tri par ordre decroissant de degre de sommets
 
+#gerer les multis graphe ?
+
 
 # nom de sommet doivent commencer a être numéroté de 0 
 def coloration(g, sommet):
@@ -106,17 +108,17 @@ def coloration3(g, sommet):
 	return resultat, frequences_couleurs
 	
 	
-G = nx.Graph()
-G.add_edges_from([(0, 1),
-				  (0, 2),
-				  (0, 4),
-				  (1, 2),
-				  (2, 3),
-				  (3, 4)
-		 		 ])
+#G = nx.Graph()
+#G.add_edges_from([(0, 1),
+#				  (0, 2),
+#				  (0, 4),
+#				  (1, 2),
+#				  (2, 3),
+#				  (3, 4)
+#		 		 ])
 		 		 
-print(coloration(G, 1))
-print(coloration2(G, 1))
-print(coloration3(G, 1))
-nx.draw(G, with_labels=True, font_weight='bold')
-plt.show()
+#print(coloration(G, 1))
+#print(coloration2(G, 1))
+#print(coloration3(G, 1))
+#nx.draw(G, with_labels=True, font_weight='bold')
+#plt.show()
